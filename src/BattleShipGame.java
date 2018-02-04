@@ -19,35 +19,24 @@ public class BattleShipGame {
         p2.populateSea(createBoatsStatically());
         p2.play = false;
 
-        boolean exit_game;
+        Player playing = p1; //player 1 starts
         while(true) {//main loop of the program
-            exit_game = switchPlayers(p1, p2);
-            if(exit_game){
+            if(playing.plays() == 1){ // if the playing player sunk all ships, he won, exit game
                 break;
-            }
-            exit_game = switchPlayers(p2, p1);
-            if(exit_game){
-                break;
+            }else{ //else change the turn of players
+                if(p1.play){
+                    p1.play = false;
+                    p2.play = true;
+                    playing = p2;
+                }else{
+                    p2.play = false;
+                    p1.play = true;
+                    playing = p1;
+                }
             }
         }
 
     }
-
-    //manipulates the turn of each player
-    //returns true if a winner has been announced
-    private static boolean switchPlayers(Player p1, Player p2) {
-        int player_status;
-        player_status = p1.plays();
-        if(player_status == 0){
-            p2.play = true;
-            p1.play = false;
-        }
-        if(player_status == 1){
-           return true;
-        }
-        return false;
-    }
-
     //this method creates a list of boats at fixed locations for each player
     private static ArrayList createBoatsStatically(){
         ArrayList<String> loc = new ArrayList();
